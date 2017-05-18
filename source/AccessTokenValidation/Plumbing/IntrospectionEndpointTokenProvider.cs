@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// changes have been made to this file by Rzpeg
+
 using IdentityModel.Client;
 using Microsoft.Owin.Logging;
 using Microsoft.Owin.Security;
@@ -115,9 +117,9 @@ namespace IdentityServer3.AccessTokenValidation
             var claims = new List<Claim>();
             foreach (var claim in response.Claims)
             {
-                if (!string.Equals(claim.Item1, "active", StringComparison.Ordinal))
+                if (!string.Equals(claim.Type, "active", StringComparison.Ordinal))
                 {
-                    claims.Add(new Claim(claim.Item1, claim.Item2));
+                    claims.Add(new Claim(claim.Type, claim.Value));
                 }
             }
             
