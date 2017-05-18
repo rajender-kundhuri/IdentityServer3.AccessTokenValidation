@@ -1,8 +1,7 @@
 IdentityServer3 - AccessTokenValidation
 ====================================================
 
-Dev build: [![Build status](https://ci.appveyor.com/api/projects/status/2qk9c4dxea9g801e?svg=true)](https://ci.appveyor.com/project/leastprivilege/thinktecture-identityserver-v3-accesstokenvalidati)
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/IdentityServer/IdentityServer3?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+##### This fork is compiled against IdentityModel 2 / .net framework 4.6.1.
 
 OWIN Middleware to validate access tokens from IdentityServer v3.
 
