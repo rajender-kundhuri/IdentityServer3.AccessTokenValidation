@@ -30,7 +30,7 @@ namespace AccessTokenValidation.Tests.Integration_Tests
 
             Func<Task> action = async () => await client.GetAsync("http://test");
             action.
-                ShouldThrow<InvalidOperationException>().
+                Should().Throw<InvalidOperationException>().
                 And.
                 Message.Should().Contain("IDX10803"); // IDX10803: Unable to create to obtain configuration from: https://discodoc
 
