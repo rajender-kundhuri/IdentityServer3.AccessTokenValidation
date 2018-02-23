@@ -32,7 +32,7 @@ namespace AccessTokenValidation.Tests.Integration_Tests
             action.
                 Should().Throw<InvalidOperationException>().
                 And.
-                Message.Should().Contain("IDX10803"); // IDX10803: Unable to create to obtain configuration from: https://discodoc
+                Message.Should().Contain("IDX20803"); // IDX20803: Unable to obtain configuration.
 
             _options.BackchannelHttpHandler = new DiscoveryEndpointHandler();
 

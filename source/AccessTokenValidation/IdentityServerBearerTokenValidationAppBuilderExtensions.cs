@@ -20,9 +20,11 @@ using Microsoft.Owin.Logging;
 using Microsoft.Owin.Security.Jwt;
 using Microsoft.Owin.Security.OAuth;
 using System;
-using System.IdentityModel.Tokens;
+using System.Collections.Generic;
+using Microsoft.IdentityModel.Tokens;
 using System.Linq;
 using System.Threading;
+using IdentityModel;
 
 namespace Owin
 {
@@ -154,8 +156,7 @@ namespace Owin
                     {
                         ValidIssuer = options.IssuerName,
                         ValidAudience = audience,
-                        IssuerSigningToken = new X509SecurityToken(options.SigningCertificate),
-
+                        IssuerSigningKey = new X509SecurityKey(options.SigningCertificate),
                         NameClaimType = options.NameClaimType,
                         RoleClaimType = options.RoleClaimType,
                     };
@@ -191,7 +192,7 @@ namespace Owin
                     }
                     else
                     {
-                        valParams.IssuerSigningKeyResolver = ResolveRsaKeys;
+                        valParams.IssuerSigningKeyResolver = IssuerSigningKeyResolver;
                     }
 
                     tokenFormat = new JwtFormat(valParams, issuerProvider);
@@ -211,29 +212,11 @@ namespace Owin
             }, LazyThreadSafetyMode.PublicationOnly);
         }
 
-        private static SecurityKey ResolveRsaKeys(
-            string token, 
-            SecurityToken securityToken, 
-            SecurityKeyIdentifier keyIdentifier, 
-            TokenValidationParameters validationParameters)
+        private static IEnumerable<SecurityKey> IssuerSigningKeyResolver(string token, SecurityToken securityToken, string kid, TokenValidationParameters validationParameters)
         {
-            string id = null;
-            foreach (var keyId in keyIdentifier)
-            {
-                var nk = keyId as NamedKeySecurityKeyIdentifierClause;
-                if (nk != null)
-                {
-                    id = nk.Id;
-                    break;
-                }
-            }
-
-            if (id == null) return null;
-
-            var issuerToken = validationParameters.IssuerSigningTokens.FirstOrDefault(it => it.Id == id);
-            if (issuerToken == null) return null;
-
-            return issuerToken.SecurityKeys.FirstOrDefault();
+            // here kid (Certificate Thumbrint) is not the same as kid we get in DiscoveryDocumentIssuerSecurityTokenProvider (x5t, line 154) 
+            // so as a temportal solution we will return all keys
+            return validationParameters.IssuerSigningKeys;
         }
     }
 }
