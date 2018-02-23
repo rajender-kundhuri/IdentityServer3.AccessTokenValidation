@@ -1,7 +1,11 @@
 IdentityServer3 - AccessTokenValidation
 ====================================================
 
-##### This fork is compiled against IdentityModel 2 / .net framework 4.6.1.
+##### This fork is a migration of the original project to:
+- .NET Framework 4.6.1
+- IdentityModel 3
+- OWIN 4
+- JWT 5
 
 OWIN Middleware to validate access tokens from IdentityServer v3.
 
