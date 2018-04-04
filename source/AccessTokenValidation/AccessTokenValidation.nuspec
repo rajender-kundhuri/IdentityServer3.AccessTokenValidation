@@ -4,10 +4,15 @@
   <metadata>
     <id>IdentityServer3.AccessTokenValidation.Owin4</id>
     <version>$version$</version>
-    <title>$title$</title>
-    <authors>$author$</authors>
-    <description>$description$</description>
+    <title>IdentityServer3 - Access Token Validation</title>
+    <authors>Brock Allen,Dominick Baier</authors>
+    <owners>Brock Allen,Dominick Baier</owners>
+    <iconUrl>https://identityserver.github.io/Documentation/assets/images/icons/IDserver_icon128.jpg</iconUrl>
+    <description>Access token validation middleware for JWT and reference tokens issued by IdentityServer3, based on JWT 5, Owin 4 and IdentityModel 3</description>
+    <copyright>Copyright 2015</copyright>
     <licenseUrl>https://github.com/Rzpeg/IdentityServer3.AccessTokenValidation/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/Rzpeg/IdentityServer3.AccessTokenValidation</projectUrl>
+    <tags>IdentityServer OpenID Connect OpenIDConnect OAuth2 OWIN ASP.NET Katana WebApi SSO Federation Claims Identity JWT token</tags>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
   </metadata>
 </package>
