@@ -65,17 +65,19 @@ namespace IdentityServer3.AccessTokenValidation
 
             if (!string.IsNullOrEmpty(options.ClientId))
             {
-                _client = new IntrospectionClient(
+                _client = new Rfc2617IntrospectionClient(
                     introspectionEndpoint, 
                     options.ClientId, 
                     options.ClientSecret,
-                    handler);
+                    handler,
+                    Rfc2617IntrospectionClient.AuthenticationHeaderStyle.Rfc2617);
             }
             else
             {
-                _client = new IntrospectionClient(
+                _client = new Rfc2617IntrospectionClient(
                     introspectionEndpoint,
-                    innerHttpMessageHandler: handler);
+                    innerHttpMessageHandler: handler,
+                    authenticationHeaderStyle: Rfc2617IntrospectionClient.AuthenticationHeaderStyle.Rfc2617);
             }
 
             _options = options;

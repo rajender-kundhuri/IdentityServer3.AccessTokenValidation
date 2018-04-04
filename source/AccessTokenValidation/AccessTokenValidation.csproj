@@ -138,6 +138,7 @@
     <Compile Include="Plumbing\ScopeRequirementMiddleware.cs" />
     <Compile Include="Plumbing\ValidationMode.cs" />
     <Compile Include="Plumbing\ScopeRequirementOptions.cs" />
+    <Compile Include="Plumbing\Rfc2617IntrospectionClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\default.licenseheader">
