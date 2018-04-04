@@ -2,7 +2,7 @@
 
 <package>
   <metadata>
-    <id>IdentityServer3.AccessTokenValidation.Owin4</id>
+    <id>IdentityServer3.AccessTokenValidation.Jwt5</id>
     <version>$version$</version>
     <title>IdentityServer3 - Access Token Validation</title>
     <authors>Brock Allen,Dominick Baier,Stanislav</authors>
