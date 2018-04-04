@@ -1,0 +1,13 @@
+﻿<?xml version="1.0"?>
+
+<package>
+  <metadata>
+    <id>IdentityServer3.AccessTokenValidation.Owin4</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <description>$description$</description>
+    <licenseUrl>https://github.com/Rzpeg/IdentityServer3.AccessTokenValidation/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/Rzpeg/IdentityServer3.AccessTokenValidation</projectUrl>
+  </metadata>
+</package>

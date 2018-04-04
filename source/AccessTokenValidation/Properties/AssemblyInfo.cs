@@ -20,8 +20,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Access Toke Validation Middleware for IdentityServer3")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Access Token Validation (Owin 4) Middleware for IdentityServer3")]
+[assembly: AssemblyDescription("Access token validation middleware for JWT and reference tokens issued by IdentityServer3, based on JWT 5, Owin 4 and IdentityModel 3")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("AccessTokenValidationMiddleware")]
