@@ -5,8 +5,7 @@
     <id>IdentityServer3.AccessTokenValidation.Owin4</id>
     <version>$version$</version>
     <title>IdentityServer3 - Access Token Validation</title>
-    <authors>Brock Allen,Dominick Baier</authors>
-    <owners>Brock Allen,Dominick Baier</owners>
+    <authors>Brock Allen,Dominick Baier,Stanislav</authors>
     <iconUrl>https://identityserver.github.io/Documentation/assets/images/icons/IDserver_icon128.jpg</iconUrl>
     <description>Access token validation middleware for JWT and reference tokens issued by IdentityServer3, based on JWT 5, Owin 4 and IdentityModel 3</description>
     <copyright>Copyright 2015</copyright>
