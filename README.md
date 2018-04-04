@@ -7,6 +7,8 @@ IdentityServer3 - AccessTokenValidation
 - OWIN 4
 - JWT 5
 
+The nuget package is published as [IdentityServer3.Contrib.AccessTokenValidation](https://www.nuget.org/packages/IdentityServer3.Contrib.AccessTokenValidation/)
+
 OWIN Middleware to validate access tokens from IdentityServer v3.
 
 You can either validate the tokens locally (JWTs only) or use the IdentityServer's access token validation endpoint (JWTs and reference tokens).
