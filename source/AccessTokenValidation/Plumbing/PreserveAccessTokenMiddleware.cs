@@ -52,7 +52,9 @@ namespace IdentityServer3.AccessTokenValidation
             var principal = context.Authentication.User;
             if (principal == null || principal.Identity == null || !principal.Identity.IsAuthenticated)
             {
-                await _next(env);
+                await _next(env)
+                    .ConfigureAwait(true);
+
                 return;
             }
 
@@ -62,7 +64,8 @@ namespace IdentityServer3.AccessTokenValidation
                 principal.Identities.First().AddClaim(new Claim("token", token));
             }
 
-            await _next(env);
+            await _next(env)
+                .ConfigureAwait(true);
         }
     }
 }

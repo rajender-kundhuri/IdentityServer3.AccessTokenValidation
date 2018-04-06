@@ -15,23 +15,20 @@
  */
 
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace IdentityServer3.AccessTokenValidation
 {
     internal static class AsyncHelper
     {
-        private static readonly TaskFactory _myTaskFactory = new TaskFactory(CancellationToken.None, TaskCreationOptions.None, TaskContinuationOptions.None, TaskScheduler.Default);
+        public static TResult RunSync<TResult>(Func<Task<TResult>> func)
+        {
+            return Task.Run(async () => await func().ConfigureAwait(false)).Result;
+        }
 
         public static void RunSync(Func<Task> func)
         {
-            _myTaskFactory.StartNew(func).Unwrap().GetAwaiter().GetResult();
-        }
-
-        public static TResult RunSync<TResult>(Func<Task<TResult>> func)
-        {
-            return _myTaskFactory.StartNew(func).Unwrap().GetAwaiter().GetResult();
+            Task.Run(async () => await func().ConfigureAwait(false)).Wait();
         }
     }
 }

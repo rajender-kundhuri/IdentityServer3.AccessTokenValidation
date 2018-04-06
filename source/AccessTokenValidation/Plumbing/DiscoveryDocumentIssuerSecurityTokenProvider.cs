@@ -29,10 +29,12 @@ namespace IdentityServer3.AccessTokenValidation
     internal class DiscoveryDocumentIssuerSecurityTokenProvider : IIssuerSecurityKeyProvider
     {
         private readonly ReaderWriterLockSlim _synclock = new ReaderWriterLockSlim();
-        private readonly ConfigurationManager<OpenIdConnectConfiguration> _configurationManager;
+        private readonly IConfigurationManager<OpenIdConnectConfiguration> _configurationManager;
         private readonly ILogger _logger;
         private string _issuer;
         private IEnumerable<Microsoft.IdentityModel.Tokens.SecurityKey> _keys;
+        private DateTimeOffset _syncAfter = new DateTimeOffset(new DateTime(2001, 1, 1));
+        private readonly TimeSpan _automaticRefreshInterval;
 
         public DiscoveryDocumentIssuerSecurityTokenProvider(string discoveryEndpoint, IdentityServerBearerTokenAuthenticationOptions options, ILoggerFactory loggerFactory)
         {
@@ -51,11 +53,14 @@ namespace IdentityServer3.AccessTokenValidation
                 webRequestHandler.ServerCertificateValidationCallback = options.BackchannelCertificateValidator.Validate;
             }
 
-            _configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(discoveryEndpoint, new OpenIdConnectConfigurationRetriever(), new HttpClient(handler))
+            var adapteeConfigurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(discoveryEndpoint, new OpenIdConnectConfigurationRetriever(), new HttpClient(handler))
             {
                 AutomaticRefreshInterval = options.AutomaticRefreshInterval
             };
 
+            _automaticRefreshInterval = adapteeConfigurationManager.AutomaticRefreshInterval;
+            _configurationManager = new ConfigurationManagerAdapter(adapteeConfigurationManager);
+            
             if (!options.DelayLoadMetadata)
             {
                 RetrieveMetadata();
@@ -131,10 +136,15 @@ namespace IdentityServer3.AccessTokenValidation
 
         private void RetrieveMetadata()
         {
+            if (_syncAfter >= DateTimeOffset.UtcNow)
+            {
+                return;
+            }
+
             _synclock.EnterWriteLock();
             try
             {
-                var result = AsyncHelper.RunSync(async () => await _configurationManager.GetConfigurationAsync());
+                var result = AsyncHelper.RunSync(() => _configurationManager.GetConfigurationAsync(CancellationToken.None));
 
                 if (result.JsonWebKeySet == null)
                 {
@@ -159,6 +169,7 @@ namespace IdentityServer3.AccessTokenValidation
 
                 _issuer = result.Issuer;
                 _keys = keys;
+                _syncAfter = DateTimeOffset.UtcNow + _automaticRefreshInterval;
             }
             catch (Exception ex)
             {

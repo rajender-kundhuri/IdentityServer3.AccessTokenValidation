@@ -26,7 +26,9 @@ namespace AccessTokenValidation.Tests.Integration_Tests
         {
             var client = PipelineFactory.CreateHttpClient(_options);
 
-            var result = await client.GetAsync("http://test");
+            var result = await client.GetAsync("http://test")
+                .ConfigureAwait(false);
+
             result.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
 
@@ -36,7 +38,9 @@ namespace AccessTokenValidation.Tests.Integration_Tests
             var client = PipelineFactory.CreateHttpClient(_options);
             client.SetBearerToken("in.valid");
 
-            var result = await client.GetAsync("http://test");
+            var result = await client.GetAsync("http://test")
+                .ConfigureAwait(false);
+
             result.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
 
@@ -48,7 +52,9 @@ namespace AccessTokenValidation.Tests.Integration_Tests
 
             client.SetBearerToken(token);
 
-            var result = await client.GetAsync("http://test");
+            var result = await client.GetAsync("http://test")
+                .ConfigureAwait(false);
+
             result.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
@@ -62,7 +68,9 @@ namespace AccessTokenValidation.Tests.Integration_Tests
 
             client.SetBearerToken(token);
 
-            var result = await client.GetAsync("http://test");
+            var result = await client.GetAsync("http://test")
+                .ConfigureAwait(false);
+
             result.StatusCode.Should().Be(HttpStatusCode.Forbidden);
         }
 
@@ -77,7 +85,9 @@ namespace AccessTokenValidation.Tests.Integration_Tests
 
             client.SetBearerToken(token);
 
-            var result = await client.GetAsync("http://test");
+            var result = await client.GetAsync("http://test")
+                .ConfigureAwait(false);
+
             result.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
@@ -89,7 +99,9 @@ namespace AccessTokenValidation.Tests.Integration_Tests
             var client = PipelineFactory.CreateHttpClient(_options);
             client.SetBearerToken("invalid");
 
-            var result = await client.GetAsync("http://test");
+            var result = await client.GetAsync("http://test")
+                .ConfigureAwait(false);
+            
             result.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
 
@@ -101,7 +113,9 @@ namespace AccessTokenValidation.Tests.Integration_Tests
             var client = PipelineFactory.CreateHttpClient(_options);
             client.SetBearerToken("reference");
 
-            var result = await client.GetAsync("http://test");
+            var result = await client.GetAsync("http://test")
+                .ConfigureAwait(false);
+            
             result.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
@@ -114,7 +128,9 @@ namespace AccessTokenValidation.Tests.Integration_Tests
             var client = PipelineFactory.CreateHttpClient(_options);
             client.SetBearerToken("reference");
 
-            var result = await client.GetAsync("http://test");
+            var result = await client.GetAsync("http://test")
+                .ConfigureAwait(false);
+            
             result.StatusCode.Should().Be(HttpStatusCode.Forbidden);
         }
 
@@ -128,7 +144,9 @@ namespace AccessTokenValidation.Tests.Integration_Tests
             var client = PipelineFactory.CreateHttpClient(_options);
             client.SetBearerToken("reference");
 
-            var result = await client.GetAsync("http://test");
+            var result = await client.GetAsync("http://test")
+                .ConfigureAwait(false);
+            
             result.StatusCode.Should().Be(HttpStatusCode.OK);
         }
     }

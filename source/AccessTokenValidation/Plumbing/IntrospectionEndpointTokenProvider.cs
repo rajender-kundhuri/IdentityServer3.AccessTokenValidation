@@ -65,19 +65,19 @@ namespace IdentityServer3.AccessTokenValidation
 
             if (!string.IsNullOrEmpty(options.ClientId))
             {
-                _client = new Rfc2617IntrospectionClient(
+                _client = new IntrospectionClient(
                     introspectionEndpoint, 
                     options.ClientId, 
                     options.ClientSecret,
                     handler,
-                    Rfc2617IntrospectionClient.AuthenticationHeaderStyle.Rfc2617);
+                    BasicAuthenticationHeaderStyle.Rfc2617);
             }
             else
             {
-                _client = new Rfc2617IntrospectionClient(
+                _client = new IntrospectionClient(
                     introspectionEndpoint,
                     innerHttpMessageHandler: handler,
-                    authenticationHeaderStyle: Rfc2617IntrospectionClient.AuthenticationHeaderStyle.Rfc2617);
+                    headerStyle: BasicAuthenticationHeaderStyle.Rfc2617);
             }
 
             _options = options;
@@ -87,7 +87,9 @@ namespace IdentityServer3.AccessTokenValidation
         {
             if (_options.EnableValidationResultCache)
             {
-                var cachedClaims = await _options.ValidationResultCache.GetAsync(context.Token);
+                var cachedClaims = await _options.ValidationResultCache.GetAsync(context.Token)
+                    .ConfigureAwait(false);
+
                 if (cachedClaims != null)
                 {
                     SetAuthenticationTicket(context, cachedClaims);
@@ -98,7 +100,9 @@ namespace IdentityServer3.AccessTokenValidation
             IntrospectionResponse response;
             try
             {
-                response = await _client.SendAsync(new IntrospectionRequest { Token = context.Token });
+                response = await _client.SendAsync(new IntrospectionRequest { Token = context.Token })
+                    .ConfigureAwait(false);
+
                 if (response.IsError)
                 {
                     _logger.WriteError("Error returned from introspection endpoint: " + response.Error);
@@ -127,7 +131,8 @@ namespace IdentityServer3.AccessTokenValidation
             
             if (_options.EnableValidationResultCache)
             {
-                await _options.ValidationResultCache.AddAsync(context.Token, claims);
+                await _options.ValidationResultCache.AddAsync(context.Token, claims)
+                    .ConfigureAwait(false);
             }
 
             SetAuthenticationTicket(context, claims);

@@ -74,7 +74,9 @@ namespace IdentityServer3.AccessTokenValidation
             {
                 tokenHash = context.Token.ToSha256();
 
-                var cachedClaims = await _options.ValidationResultCache.GetAsync(tokenHash);
+                var cachedClaims = await _options.ValidationResultCache.GetAsync(tokenHash)
+                    .ConfigureAwait(false);
+                
                 if (cachedClaims != null)
                 {
                     SetAuthenticationTicket(context, cachedClaims);
@@ -90,7 +92,9 @@ namespace IdentityServer3.AccessTokenValidation
             HttpResponseMessage response = null;
             try
             {
-                response = await _client.PostAsync(_tokenValidationEndpoint, new FormUrlEncodedContent(form));
+                response = await _client.PostAsync(_tokenValidationEndpoint, new FormUrlEncodedContent(form))
+                    .ConfigureAwait(false);
+
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
                     _logger.WriteInformation("Error returned from token validation endpoint: " + response.ReasonPhrase);
@@ -103,7 +107,9 @@ namespace IdentityServer3.AccessTokenValidation
                 return;
             }
 
-            var jsonString = await response.Content.ReadAsStringAsync();
+            var jsonString = await response.Content.ReadAsStringAsync()
+                .ConfigureAwait(false);
+
             var dictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonString);
 
             var claims = new List<Claim>();
@@ -127,7 +133,8 @@ namespace IdentityServer3.AccessTokenValidation
 
             if (_options.EnableValidationResultCache)
             {
-                await _options.ValidationResultCache.AddAsync(tokenHash, claims);
+                await _options.ValidationResultCache.AddAsync(tokenHash, claims)
+                    .ConfigureAwait(false);
             }
 
             SetAuthenticationTicket(context, claims);
