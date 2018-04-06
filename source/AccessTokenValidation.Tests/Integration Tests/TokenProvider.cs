@@ -43,7 +43,9 @@ namespace AccessTokenValidation.Tests.Integration_Tests
             var client = PipelineFactory.CreateHttpClient(_options);
             var token = TokenFactory.CreateTokenString(TokenFactory.CreateToken());
 
-            var result = await client.GetAsync("http://test?access_token=" + token);
+            var result = await client.GetAsync("http://test?access_token=" + token)
+                .ConfigureAwait(false);
+
             result.StatusCode.Should().Be(HttpStatusCode.OK);
 
         }
@@ -67,7 +69,9 @@ namespace AccessTokenValidation.Tests.Integration_Tests
             var token = TokenFactory.CreateTokenString(TokenFactory.CreateToken());
             client.SetBearerToken(token);
 
-            var result = await client.GetAsync("http://test");
+            var result = await client.GetAsync("http://test")
+                .ConfigureAwait(false);
+
             result.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         }
     }

@@ -144,7 +144,7 @@ namespace IdentityServer3.AccessTokenValidation
             _synclock.EnterWriteLock();
             try
             {
-                var result = AsyncHelper.RunSync(async () => await _configurationManager.GetConfigurationAsync(CancellationToken.None));
+                var result = AsyncHelper.RunSync(() => _configurationManager.GetConfigurationAsync(CancellationToken.None));
 
                 if (result.JsonWebKeySet == null)
                 {
