@@ -32,14 +32,17 @@ namespace AccessTokenValidation.Tests.Integration_Tests
                     context.Response.Headers.Add("Access-Control-Allow-Method", new[] { "ACAM Value" });
                     context.Response.Headers.Add("Access-Control-Allow-Headers", new[] { "ACAH Value" });
 
-                    await next();
+                    await next()
+                        .ConfigureAwait(true);
                 });
             });
 
             var token = TokenFactory.CreateTokenString(TokenFactory.CreateToken(scope: new string[] { TokenFactory.Api1Scope }));
             client.SetBearerToken(token);
 
-            var result = await client.GetAsync("http://test");
+            var result = await client.GetAsync("http://test")
+                .ConfigureAwait(false);
+
             var responseHeaders = result.Headers;
 
             responseHeaders.GetValues("Access-Control-Allow-Origin").Should().BeEquivalentTo("ACAO Value");
@@ -58,14 +61,17 @@ namespace AccessTokenValidation.Tests.Integration_Tests
                     context.Request.Headers.Add("Access-Control-Request-Method", new[] { "ACRM Value" });
                     context.Request.Headers.Add("Access-Control-Request-Headers", new[] { "ACRH Value" });
 
-                    await next();
+                    await next()
+                        .ConfigureAwait(true);
                 });
             });
 
             var token = TokenFactory.CreateTokenString(TokenFactory.CreateToken(scope: new string[] { TokenFactory.Api1Scope }));
             client.SetBearerToken(token);
 
-            var result = await client.GetAsync("http://test");
+            var result = await client.GetAsync("http://test")
+                .ConfigureAwait(false);
+
             var responseHeaders = result.Headers;
 
             responseHeaders.GetValues("Access-Control-Allow-Origin").Should().BeEquivalentTo("Origin Value");

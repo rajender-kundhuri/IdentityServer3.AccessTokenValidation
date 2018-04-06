@@ -28,7 +28,9 @@ namespace AccessTokenValidation.Tests.Integration_Tests
 
             client.SetBearerToken(token);
 
-            Func<Task> action = async () => await client.GetAsync("http://test");
+            Func<Task> action = async () => await client.GetAsync("http://test")
+                .ConfigureAwait(false);
+
             action.
                 Should().Throw<InvalidOperationException>().
                 And.
@@ -36,7 +38,9 @@ namespace AccessTokenValidation.Tests.Integration_Tests
 
             _options.BackchannelHttpHandler = new DiscoveryEndpointHandler();
 
-            var result = await client.GetAsync("http://test");
+            var result = await client.GetAsync("http://test")
+                .ConfigureAwait(false);
+
             result.StatusCode.Should().Be(HttpStatusCode.OK);
         }
     }
