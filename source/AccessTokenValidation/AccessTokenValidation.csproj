@@ -114,6 +114,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Plumbing\ConfigurationManagerAdapter.cs" />
     <Compile Include="Plumbing\HashStringEncoding.cs" />
     <Compile Include="Plumbing\HashStringExtensions.cs" />
     <Compile Include="Plumbing\IdentityServerOAuthBearerAuthenticationOptions.cs" />
