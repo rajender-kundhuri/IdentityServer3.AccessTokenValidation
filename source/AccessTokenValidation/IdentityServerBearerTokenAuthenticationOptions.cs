@@ -39,6 +39,7 @@ namespace IdentityServer3.AccessTokenValidation
             RoleClaimType = "role";
 
             ValidationMode = ValidationMode.Both;
+            RequireHttps = true;
             RequiredScopes = Enumerable.Empty<string>();
             ValidationResultCacheDuration = TimeSpan.FromMinutes(5);
             PreserveAccessToken = false;
@@ -77,6 +78,14 @@ namespace IdentityServer3.AccessTokenValidation
         /// The validation mode.
         /// </value>
         public ValidationMode ValidationMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether to connect via HTTPS (default = true)
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [require https]; otherwise, <c>false</c>.
+        /// </value>
+        public bool RequireHttps { get; set; }
 
         /// <summary>
         /// Gets or sets the backchannel HTTP handler.
