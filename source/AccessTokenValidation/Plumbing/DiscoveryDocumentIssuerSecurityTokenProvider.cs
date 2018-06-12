@@ -53,7 +53,7 @@ namespace IdentityServer3.AccessTokenValidation
                 webRequestHandler.ServerCertificateValidationCallback = options.BackchannelCertificateValidator.Validate;
             }
 
-            var adapteeConfigurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(discoveryEndpoint, new OpenIdConnectConfigurationRetriever(), new HttpClient(handler))
+            var adapteeConfigurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(discoveryEndpoint, new OpenIdConnectConfigurationRetriever(), new HttpDocumentRetriever(new HttpClient(handler)) { RequireHttps = options.RequireHttps })
             {
                 AutomaticRefreshInterval = options.AutomaticRefreshInterval
             };
