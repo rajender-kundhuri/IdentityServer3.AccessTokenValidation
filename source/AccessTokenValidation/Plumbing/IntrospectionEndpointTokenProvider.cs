@@ -32,7 +32,8 @@ namespace IdentityServer3.AccessTokenValidation
 {
     internal class IntrospectionEndpointTokenProvider : AuthenticationTokenProvider
     {
-        private readonly IntrospectionClient _client;
+        private readonly HttpClient httpClient;
+        private readonly string introspectionEndpoint;
         private readonly IdentityServerBearerTokenAuthenticationOptions _options;
         private readonly ILogger _logger;
 
@@ -47,7 +48,7 @@ namespace IdentityServer3.AccessTokenValidation
 
             var baseAddress = options.Authority.EnsureTrailingSlash();
             baseAddress += "connect/introspect";
-            var introspectionEndpoint = baseAddress;
+            this.introspectionEndpoint = baseAddress;
 
             var handler = options.IntrospectionHttpHandler ?? new WebRequestHandler();
 
@@ -63,22 +64,7 @@ namespace IdentityServer3.AccessTokenValidation
                 webRequestHandler.ServerCertificateValidationCallback = options.BackchannelCertificateValidator.Validate;
             }
 
-            if (!string.IsNullOrEmpty(options.ClientId))
-            {
-                _client = new IntrospectionClient(
-                    introspectionEndpoint, 
-                    options.ClientId, 
-                    options.ClientSecret,
-                    handler,
-                    BasicAuthenticationHeaderStyle.Rfc2617);
-            }
-            else
-            {
-                _client = new IntrospectionClient(
-                    introspectionEndpoint,
-                    innerHttpMessageHandler: handler,
-                    headerStyle: BasicAuthenticationHeaderStyle.Rfc2617);
-            }
+            this.httpClient = new HttpClient(handler);
 
             _options = options;
         }
@@ -100,7 +86,20 @@ namespace IdentityServer3.AccessTokenValidation
             IntrospectionResponse response;
             try
             {
-                response = await _client.SendAsync(new IntrospectionRequest { Token = context.Token })
+                var request = new TokenIntrospectionRequest
+                {
+                    Address = this.introspectionEndpoint,
+                    Token = context.Token,
+                    AuthorizationHeaderStyle = BasicAuthenticationHeaderStyle.Rfc2617
+                };
+
+                if (!string.IsNullOrEmpty(this._options.ClientId))
+                {
+                    request.ClientId = this._options.ClientId;
+                    request.ClientSecret = this._options.ClientSecret;
+                }
+
+                response = await this.httpClient.IntrospectTokenAsync(request)
                     .ConfigureAwait(false);
 
                 if (response.IsError)
