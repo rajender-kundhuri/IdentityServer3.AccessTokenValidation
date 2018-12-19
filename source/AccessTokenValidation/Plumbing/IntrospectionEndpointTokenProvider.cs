@@ -89,8 +89,7 @@ namespace IdentityServer3.AccessTokenValidation
                 var request = new TokenIntrospectionRequest
                 {
                     Address = this.introspectionEndpoint,
-                    Token = context.Token,
-                    AuthorizationHeaderStyle = BasicAuthenticationHeaderStyle.Rfc2617
+                    Token = context.Token
                 };
 
                 if (!string.IsNullOrEmpty(this._options.ClientId))
