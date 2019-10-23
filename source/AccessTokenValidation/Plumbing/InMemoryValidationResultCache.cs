@@ -76,10 +76,9 @@ namespace IdentityServer3.AccessTokenValidation
 
             if (expiryClaim != null)
             {
-                long epoch;
-                if (long.TryParse(expiryClaim.Value, out epoch))
+                if (long.TryParse(expiryClaim.Value, out var epoch))
                 {
-                    var tokenExpiresAt = epoch.ToDateTimeOffsetFromEpoch();
+                    var tokenExpiresAt = DateTimeOffset.FromUnixTimeSeconds(epoch);
 
                     if (tokenExpiresAt < cacheExpirySetting)
                     {
