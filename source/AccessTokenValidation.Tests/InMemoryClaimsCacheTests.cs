@@ -1,14 +1,17 @@
-﻿using IdentityModel;
+﻿
 using IdentityServer3.AccessTokenValidation;
+
 using Moq;
+
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+
 using Xunit;
 
 namespace AccessTokenValidation.Tests
 {
-	public class InMemoryClaimsCacheTests
+    public class InMemoryClaimsCacheTests
 	{
         const string Category = "InMemoryClaimsCache";
 		protected double ExpiryClaimSaysTokenExpiresInMinutes;
@@ -49,8 +52,8 @@ namespace AccessTokenValidation.Tests
 			Arrange(() =>
 				{
 					// mimic the DateTimeOffset rounding that happens via serialisation/deserialisation in the actual implementation
-					ExpectedCacheExpiry = ExpiryClaimSaysTokenExpiresAt.ToEpochTime().ToDateTimeOffsetFromEpoch(); 
-				});
+                    ExpectedCacheExpiry = DateTimeOffset.FromUnixTimeSeconds(ExpiryClaimSaysTokenExpiresAt.ToUnixTimeSeconds());
+                });
 
 			// act
 			Sut.AddAsync(token, Claims);
@@ -84,7 +87,7 @@ namespace AccessTokenValidation.Tests
 			CacheExpiryEvictsTokenAt = _clock.UtcNow.Add(_options.ValidationResultCacheDuration);
 			
 			// setup claims to include expiry claim
-			Claims = new[] {new Claim("bar","baz"), new Claim(ClaimTypes.Expiration,ExpiryClaimSaysTokenExpiresAt.ToEpochTime().ToString()) };
+			Claims = new[] {new Claim("bar","baz"), new Claim(ClaimTypes.Expiration,ExpiryClaimSaysTokenExpiresAt.ToUnixTimeSeconds().ToString()) };
 
 			specifyExpectedCacheExpiry();
 

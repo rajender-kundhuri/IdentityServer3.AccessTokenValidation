@@ -17,13 +17,13 @@
 // changes have been made to this file by Rzpeg
 
 using IdentityModel.Client;
+
 using Microsoft.Owin.Logging;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Infrastructure;
-using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -83,7 +83,7 @@ namespace IdentityServer3.AccessTokenValidation
                 }
             }
 
-            IntrospectionResponse response;
+            TokenIntrospectionResponse response;
             try
             {
                 var request = new TokenIntrospectionRequest
