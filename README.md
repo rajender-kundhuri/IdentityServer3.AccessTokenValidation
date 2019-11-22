@@ -3,7 +3,7 @@ IdentityServer3 - AccessTokenValidation
 
 ##### This fork is a migration of the original project to:
 - .NET Framework 4.6.1
-- IdentityModel 3
+- IdentityModel 4
 - OWIN 4
 - JWT 5
 
