@@ -153,18 +153,9 @@ namespace IdentityServer3.AccessTokenValidation
                 }
 
                 var keys = new List<Microsoft.IdentityModel.Tokens.SecurityKey>();
-                foreach (var key in result.JsonWebKeySet.Keys)
+                foreach (SecurityKey security in result.JsonWebKeySet.Keys)
                 {
-                    var securityKey = new Microsoft.IdentityModel.Tokens.RsaSecurityKey(new RSAParameters
-                    {
-                        Exponent = Microsoft.IdentityModel.Tokens.Base64UrlEncoder.DecodeBytes(key.E),
-                        Modulus = Microsoft.IdentityModel.Tokens.Base64UrlEncoder.DecodeBytes(key.N)
-                    })
-                    {
-                        KeyId = key.Kid //key.KeyId is null (should be cert thumbprint)! Kid is x5t!
-                    };
-                    
-                    keys.Add(securityKey);
+                        keys.Add(security);
                 }
 
                 _issuer = result.Issuer;
